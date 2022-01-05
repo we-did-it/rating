@@ -1,7 +1,7 @@
 const app = new Vue({
   el: '#app',
   data: {
-    currentPage: 1,
+    currentPage: 0,
     preludeScore: 3,
     communicationScore: 3,
     intimacyScore: 3,
@@ -26,6 +26,14 @@ const app = new Vue({
     },
     getProperty (property) {
       return this[property]
+    },
+    goToNextPage () {
+      this.currentPage++
+      window.scrollTo(0, 0)
+    },
+    goToPreviousPage () {
+      this.currentPage--
+      window.scrollTo(0, 0)
     },
     takeScreenshot () {
       const screenshotWrapper = document.querySelector('.screenshot-wrapper')

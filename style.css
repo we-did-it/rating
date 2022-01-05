@@ -190,3 +190,7 @@ p.section-headline,
 .results .comments .content {
   text-align: left;
 }
+
+.results .results-title {
+  text-align: left;
+}
