@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>We did it</title>
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> 
+</head>
+<body>
+
+  <div id="app">
+    <div class="page introduction" v-if="currentPage == 0">
+      <h1 class="emoji">🏁</h1>
+      <p>
+        <strong>Herzlichen Glückwunsch!</strong>
+      </p>
+      <p>
+        Wir haben offensichtlich einige Minuten (oder sogar mehr?) erfolgreich zusammen im Bett verbracht. Für den Lacher (und die persönliche Neugier) bitte ich dich, unser gemeinsames Erlebnis ehrlich einzuschätzen.
+      </p>
+
+      <button @click="currentPage++" class="button">
+        Los geht's!
+      </button>
+    </div>
+
+    <div 
+      class="page" 
+      v-for="(question, index) in questions"
+      v-if="currentPage == index + 1"
+    >
+      <h1 class="emoji">{{ question.emoji }}</h1>
+      <h1>{{ question.title }}</h1>
+      <div class="slider">
+        <input 
+          type="range" min="1" max="5" value="3"
+          @change="value => setValue(question.property, value)"
+        >
+        <div class="caption">
+          <div class="caption-item" v-for="i in [1,2,3,4,5]">{{ i }}</div>
+        </div>
+      </div>
+
+      <button class="button" @click="currentPage++">Weiter</button>
+      <p class="back-button" @click="currentPage--">Zurück</p>
+    </div>
+
+    <div class="page" v-if="currentPage == 8">
+      <h1 class="emoji">😏</h1>
+      <p>
+        Noch irgendwelche Kommentare?
+      </p>
+
+      <textarea class="comment" cols="30" rows="10" v-model="comments">
+
+      </textarea>
+
+      <button class="button" @click="currentPage++">Weiter</button>
+      <p class="back-button" @click="currentPage--">Zurück</p>
+    </div>
+
+    <div 
+      class="page results" 
+      v-if="currentPage == 9"
+    >
+      <h3>So habe ich mich also geschlagen?</h3>
+      <div class="screenshot-wrapper">
+        <div
+          v-for="(question, index) in questions"
+          class="slider-wrapper"
+        >
+          <p class="section-headline">{{question.title}}</p>
+          <div class="range">
+            <div 
+              class="range-item" 
+              :class="`range-item ${getProperty(question.property) == i ? 'active' : ''}`"
+              v-for="i in [1,2,3,4,5]"
+            >
+              {{ i }}
+            </div>
+          </div>
+        </div>
+        <div v-if="comments.trim().length > 0" class="comments">
+          <p class="section-headline">Kommentar</p>
+          <p class="content">{{comments}}</p>
+        </div>
+      </div>
+
+      <button class="button" @click="takeScreenshot">Teilen</button>
+      <p class="back-button" @click="currentPage--">Zurück</p>
+    </div>
+  </div>
+
+  
+  <!-- development version, includes helpful console warnings -->
+  <!--script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script-->
+  <!-- production version, optimized for size and speed -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
+  <script src="script.js"></script>
+  <script src="lib/html2canvas.min.js"></script>
+</body>
+</html>
